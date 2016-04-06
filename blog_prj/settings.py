@@ -38,6 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'blog',
+    'disqus',
+    'django.contrib.sites',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -140,3 +142,5 @@ STATIC_URL = '/static/'
 
 # Our static files folder
 STATICFILES_DIRS=( os.path.join(BASE_DIR,"static"),)
+
+DISQUS_WEBSITE_SHORTNAME = 'here-we-are-at-code-institute'
