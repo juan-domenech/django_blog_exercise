@@ -7,9 +7,12 @@ from .forms import BlogPostForm
 def test(request):
     return HttpResponse('Test OK!')
 
+def no_path(request):
+    return redirect('/blog/')
+
 def post_list(request):
     posts = Post.objects.filter(published_date__lte = timezone.now() ).order_by('-published_date')
-    return render(request, "blogtests.html",{'posts' : posts } )
+    return render(request, "blogposts.html",{'posts' : posts } )
 
 def post_detail(request,id):
     post = get_object_or_404(Post,pk=id)
