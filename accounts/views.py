@@ -1,4 +1,4 @@
-from django.shortcuts import render, render, redirect
+from django.shortcuts import render, redirect
 from django.contrib import messages, auth
 from accounts.forms import UserRegistrationForm, UserLoginForm
 from django.core.urlresolvers import reverse
@@ -6,7 +6,6 @@ from django.template.context_processors import csrf
 from django.contrib.auth.decorators import login_required
 
 
-# Create your views here.
 def register(request):
     if request.method == 'POST':
         form = UserRegistrationForm(request.POST)

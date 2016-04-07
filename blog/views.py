@@ -3,6 +3,9 @@ from django.utils import timezone
 from .models import Post
 from .forms import BlogPostForm
 
+from django.contrib import auth
+
+
 # Create your views here.
 def test(request):
     return HttpResponse('Test OK!')
@@ -25,8 +28,9 @@ def new_post(request):
         form = BlogPostForm(request.POST, request.FILES)
         if form.is_valid():
             post = form.save(commit=False)
-            post.author = request.user
-            #post.author = user.email
+            #post.author = request.user
+            post.author = auth.get_user(request)
+            print post.author
             post.published_date = timezone.now()
             post.save()
             return redirect(post_detail, post.pk)

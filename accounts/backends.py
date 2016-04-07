@@ -3,7 +3,7 @@ from models import User
 class EmailAuth(object):
     def authenticate(self, email=None, password=None):
         """
-        Get aninstance of User using the supplied email and check its password
+        Get an instance of User using the supplied email and check its password
         """
         try:
             user = User.objects.get(email=email)
