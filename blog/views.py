@@ -6,7 +6,6 @@ from .forms import BlogPostForm
 from django.contrib import auth
 
 
-# Create your views here.
 def test(request):
     return HttpResponse('Test OK!')
 
@@ -19,7 +18,8 @@ def post_list(request):
 
 def post_detail(request,id):
     post = get_object_or_404(Post,pk=id)
-    post.views += 1 # clock up the number of post views
+    # clock up the number of post views
+    post.views += 1
     post.save()
     return render(request, "blogdetail.html",{'post' : post} )
 
@@ -28,6 +28,7 @@ def new_post(request):
         form = BlogPostForm(request.POST, request.FILES)
         if form.is_valid():
             post = form.save(commit=False)
+            # Connect to the new AUTH method (using email instead of username)
             #post.author = request.user
             post.author = auth.get_user(request)
             print post.author

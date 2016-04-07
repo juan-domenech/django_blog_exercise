@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
-    <h2>Success!</h2>
+    <h2>Your profile:</h2>
     <p>You are logged in as {{ user.email }}</p>
+    <p>Your last successful login was on: {{ user.last_login }}</p>
+    <p>(Joined this site on {{  user.date_joined }})</p>
 {% endblock %}

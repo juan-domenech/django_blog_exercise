@@ -1,10 +1,8 @@
 from __future__ import unicode_literals
 
 from django.db import models
-
-# Create your models here.
-from django.db import models
 from django.utils import timezone
+
 
 class Post(models.Model):
     # author is linked to a registered user in the "auth_user" table
