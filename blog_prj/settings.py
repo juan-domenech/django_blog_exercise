@@ -27,6 +27,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+SITE_ID = 1
 
 # Application definition
 
@@ -41,6 +42,7 @@ INSTALLED_APPS = [
     'disqus',
     'django.contrib.sites',
     'django_forms_bootstrap',
+    'django.contrib.flatpages',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -52,6 +54,8 @@ MIDDLEWARE_CLASSES = [
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.security.SecurityMiddleware',
+    'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
 ]
 
 ROOT_URLCONF = 'blog_prj.urls'
@@ -144,7 +148,7 @@ STATIC_URL = '/static/'
 # Our static files folder
 STATICFILES_DIRS=( os.path.join(BASE_DIR,"static"),)
 
-#DISQUS_WEBSITE_SHORTNAME = 'here-we-are-at-code-institute'
+#DISQUS_WEBSITE_SHORTNAME = 'here-we-are-at-code-institute' (Giving up with Disqus: It doesn't work with my SHORNAME. Using someone elses instead)
 DISQUS_WEBSITE_SHORTNAME = "localhost"
 
 MEDIA_ROOT = os.path.join(BASE_DIR,'media')
