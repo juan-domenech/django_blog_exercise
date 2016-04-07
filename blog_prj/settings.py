@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'django_forms_bootstrap',
     'django.contrib.flatpages',
+    'accounts',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -153,3 +154,9 @@ DISQUS_WEBSITE_SHORTNAME = "localhost"
 
 MEDIA_ROOT = os.path.join(BASE_DIR,'media')
 MEDIA_URL = '/media/'
+
+AUTH_USER_MODEL = 'accounts.User'
+
+AUTHENTICATION_BACKENDS = ('accounts.backends.EmailAuth',)
+
+

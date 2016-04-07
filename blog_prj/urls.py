@@ -17,11 +17,16 @@ from django.conf.urls import url,include
 from django.contrib import admin
 from blog import views
 from .settings import MEDIA_ROOT
+from accounts.views import register, profile, login, logout
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^test$', views.test),
-    url(r'^pages/',include('django.contrib.flatpages.urls')),
     url(r'', include('blog.urls')),
     url(r'^media/(?P<path>.*)$', 'django.views.static.serve',{'document_root':MEDIA_ROOT}),
+    url(r'^pages/',include('django.contrib.flatpages.urls')),
+    url(r'^register/$', register, name='register'),
+    url(r'^profile/$', profile,name='profile'),
+    url(r'^login/$', login, name='login'),
+    url(r'^//logout/$',logout, name='logout'),
 ]
