@@ -29,5 +29,5 @@ urlpatterns = [
     url(r'^register/$', register, name='register'),
     url(r'^profile/$', profile,name='profile'),
     url(r'^login/$', login, name='login'),
-    url(r'^//logout/$',logout, name='logout'),
+    url(r'^logout/$',logout, name='logout'),
 ]

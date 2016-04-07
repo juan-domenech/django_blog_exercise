@@ -16,6 +16,96 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `accounts_user`
+--
+
+DROP TABLE IF EXISTS `accounts_user`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `accounts_user` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `password` varchar(128) NOT NULL,
+  `last_login` datetime(6) DEFAULT NULL,
+  `is_superuser` tinyint(1) NOT NULL,
+  `username` varchar(30) NOT NULL,
+  `first_name` varchar(30) NOT NULL,
+  `last_name` varchar(30) NOT NULL,
+  `email` varchar(254) NOT NULL,
+  `is_staff` tinyint(1) NOT NULL,
+  `is_active` tinyint(1) NOT NULL,
+  `date_joined` datetime(6) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `username` (`username`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `accounts_user`
+--
+
+LOCK TABLES `accounts_user` WRITE;
+/*!40000 ALTER TABLE `accounts_user` DISABLE KEYS */;
+INSERT INTO `accounts_user` VALUES (1,'pbkdf2_sha256$24000$yvqC43XPALuq$NuZZgqjooM1PRly4HHGihwLHiMmzrFviZew0KNSJm84=','2016-04-07 15:21:47.915040',0,'juan@gmail.com','','','juan@gmail.com',0,1,'2016-04-07 12:04:39.375225'),(2,'pbkdf2_sha256$24000$EZ5tH8R0pR1m$oX5bQe/8C9QRGj2Co5SgsLCulzQ51k2uhEkmvVuv/P8=','2016-04-07 15:55:51.315250',1,'pep@pep.com','','','pep@pep.com',1,1,'2016-04-07 15:46:17.065508');
+/*!40000 ALTER TABLE `accounts_user` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `accounts_user_groups`
+--
+
+DROP TABLE IF EXISTS `accounts_user_groups`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `accounts_user_groups` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
+  `group_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `accounts_user_groups_user_id_59c0b32f_uniq` (`user_id`,`group_id`),
+  KEY `accounts_user_groups_group_id_bd11a704_fk_auth_group_id` (`group_id`),
+  CONSTRAINT `accounts_user_groups_group_id_bd11a704_fk_auth_group_id` FOREIGN KEY (`group_id`) REFERENCES `auth_group` (`id`),
+  CONSTRAINT `accounts_user_groups_user_id_52b62117_fk_accounts_user_id` FOREIGN KEY (`user_id`) REFERENCES `accounts_user` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `accounts_user_groups`
+--
+
+LOCK TABLES `accounts_user_groups` WRITE;
+/*!40000 ALTER TABLE `accounts_user_groups` DISABLE KEYS */;
+/*!40000 ALTER TABLE `accounts_user_groups` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `accounts_user_user_permissions`
+--
+
+DROP TABLE IF EXISTS `accounts_user_user_permissions`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `accounts_user_user_permissions` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
+  `permission_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `accounts_user_user_permissions_user_id_2ab516c2_uniq` (`user_id`,`permission_id`),
+  KEY `accounts_user_user__permission_id_113bb443_fk_auth_permission_id` (`permission_id`),
+  CONSTRAINT `accounts_user_user__permission_id_113bb443_fk_auth_permission_id` FOREIGN KEY (`permission_id`) REFERENCES `auth_permission` (`id`),
+  CONSTRAINT `accounts_user_user_permissi_user_id_e4f0a161_fk_accounts_user_id` FOREIGN KEY (`user_id`) REFERENCES `accounts_user` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `accounts_user_user_permissions`
+--
+
+LOCK TABLES `accounts_user_user_permissions` WRITE;
+/*!40000 ALTER TABLE `accounts_user_user_permissions` DISABLE KEYS */;
+/*!40000 ALTER TABLE `accounts_user_user_permissions` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `auth_group`
 --
 
@@ -82,7 +172,7 @@ CREATE TABLE `auth_permission` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `auth_permission_content_type_id_01ab375a_uniq` (`content_type_id`,`codename`),
   CONSTRAINT `auth_permissi_content_type_id_2f476e4b_fk_django_content_type_id` FOREIGN KEY (`content_type_id`) REFERENCES `django_content_type` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -91,7 +181,7 @@ CREATE TABLE `auth_permission` (
 
 LOCK TABLES `auth_permission` WRITE;
 /*!40000 ALTER TABLE `auth_permission` DISABLE KEYS */;
-INSERT INTO `auth_permission` VALUES (1,'Can add log entry',1,'add_logentry'),(2,'Can change log entry',1,'change_logentry'),(3,'Can delete log entry',1,'delete_logentry'),(4,'Can add permission',2,'add_permission'),(5,'Can change permission',2,'change_permission'),(6,'Can delete permission',2,'delete_permission'),(7,'Can add group',3,'add_group'),(8,'Can change group',3,'change_group'),(9,'Can delete group',3,'delete_group'),(10,'Can add user',4,'add_user'),(11,'Can change user',4,'change_user'),(12,'Can delete user',4,'delete_user'),(13,'Can add content type',5,'add_contenttype'),(14,'Can change content type',5,'change_contenttype'),(15,'Can delete content type',5,'delete_contenttype'),(16,'Can add session',6,'add_session'),(17,'Can change session',6,'change_session'),(18,'Can delete session',6,'delete_session'),(19,'Can add post',7,'add_post'),(20,'Can change post',7,'change_post'),(21,'Can delete post',7,'delete_post'),(22,'Can add site',8,'add_site'),(23,'Can change site',8,'change_site'),(24,'Can delete site',8,'delete_site'),(25,'Can add flat page',9,'add_flatpage'),(26,'Can change flat page',9,'change_flatpage'),(27,'Can delete flat page',9,'delete_flatpage');
+INSERT INTO `auth_permission` VALUES (1,'Can add log entry',1,'add_logentry'),(2,'Can change log entry',1,'change_logentry'),(3,'Can delete log entry',1,'delete_logentry'),(4,'Can add permission',2,'add_permission'),(5,'Can change permission',2,'change_permission'),(6,'Can delete permission',2,'delete_permission'),(7,'Can add group',3,'add_group'),(8,'Can change group',3,'change_group'),(9,'Can delete group',3,'delete_group'),(13,'Can add content type',5,'add_contenttype'),(14,'Can change content type',5,'change_contenttype'),(15,'Can delete content type',5,'delete_contenttype'),(16,'Can add session',6,'add_session'),(17,'Can change session',6,'change_session'),(18,'Can delete session',6,'delete_session'),(19,'Can add post',7,'add_post'),(20,'Can change post',7,'change_post'),(21,'Can delete post',7,'delete_post'),(22,'Can add site',8,'add_site'),(23,'Can change site',8,'change_site'),(24,'Can delete site',8,'delete_site'),(25,'Can add flat page',9,'add_flatpage'),(26,'Can change flat page',9,'change_flatpage'),(27,'Can delete flat page',9,'delete_flatpage'),(28,'Can add user',10,'add_user'),(29,'Can change user',10,'change_user'),(30,'Can delete user',10,'delete_user');
 /*!40000 ALTER TABLE `auth_permission` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -205,7 +295,7 @@ CREATE TABLE `blog_post` (
   PRIMARY KEY (`id`),
   KEY `blog_post_author_id_dd7a8485_fk_auth_user_id` (`author_id`),
   CONSTRAINT `blog_post_author_id_dd7a8485_fk_auth_user_id` FOREIGN KEY (`author_id`) REFERENCES `auth_user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -214,7 +304,7 @@ CREATE TABLE `blog_post` (
 
 LOCK TABLES `blog_post` WRITE;
 /*!40000 ALTER TABLE `blog_post` DISABLE KEYS */;
-INSERT INTO `blog_post` VALUES (1,'Post 1 with new content','Lorem ipsum dolor sit amet, consectetur adipisicing elit. Doloribus quisquam impedit aut vel, eaque, est vero, quo ipsum voluptates voluptatum quae assumenda delectus corporis eum! Ducimus in similique fuga aliquam?Lorem ipsum dolor sit amet, consectetur adipisicing elit. Doloribus quisquam impedit aut vel, eaque, est vero, quo ipsum voluptates voluptatum quae assumenda delectus corporis eum! Ducimus in similique fuga aliquam?Lorem ipsum dolor sit amet, consectetur adipisicing elit. Doloribus quisquam impedit aut vel, eaque, est vero, quo ipsum voluptates voluptatum quae assumenda delectus corporis eum! Ducimus in similique fuga aliquam?Lorem ipsum dolor sit amet, consectetur adipisicing elit. Doloribus quisquam impedit aut vel, eaque, est vero, quo ipsum voluptates voluptatum quae assumenda delectus corporis eum! Ducimus in similique fuga aliquam?Lorem ipsum dolor sit amet, consectetur adipisicing elit. Doloribus quisquam impedit aut vel, eaque, est vero, quo ipsum voluptates voluptatum quae assumenda delectus corporis eum! Ducimus in similique fuga aliquam?','2016-04-05 13:21:44.000000','2016-04-06 14:37:02.478901',1,35,'First post, another one','images/virgin-media-ethernet-20160404.png'),(2,'Post 2','And another one.\r\nLorem ipsum dolor sit amet, consectetur adipisicing elit. Doloribus quisquam impedit aut vel, eaque, est vero, quo ipsum voluptates voluptatum quae assumenda delectus corporis eum! Ducimus in similique fuga aliquam?\r\nLorem ipsum dolor sit amet, consectetur adipisicing elit. Doloribus quisquam impedit aut vel, eaque, est vero, quo ipsum voluptates voluptatum quae assumenda delectus corporis eum! Ducimus in similique fuga aliquam?','2016-04-05 14:34:24.000000','2016-04-05 14:34:40.000000',1,47,'Second post',''),(3,'Post 3','Posr 3','2016-04-06 14:11:00.421373','2016-04-06 14:11:00.428162',1,0,NULL,'images/virgin-media-ethernet-20160404_nGkPrxy.png'),(4,'Post 4','Post 4','2016-04-06 14:12:36.222357','2016-04-06 14:12:36.242714',1,3,NULL,'images/virgin-media-ethernet-20160404_61ApqeE.png'),(5,'Post 5','Post5','2016-04-06 14:15:21.901429','2016-04-06 14:15:21.925138',1,3,NULL,'images/virgin-media-ethernet-20160404_6jwVPjD.png'),(6,'Post 6','Post 6 with new content (2)','2016-04-06 14:15:38.563666','2016-04-06 14:38:51.302186',1,6,NULL,'images/virgin-media-ethernet-20160404_gugNKVR.png'),(7,'Post 7','Post 7','2016-04-06 14:19:55.248137','2016-04-06 15:16:17.266667',1,27,NULL,'images/virgin-media-ethernet-20160404_Viiix1G.png');
+INSERT INTO `blog_post` VALUES (1,'Post 1 with new content','Lorem ipsum dolor sit amet, consectetur adipisicing elit. Doloribus quisquam impedit aut vel, eaque, est vero, quo ipsum voluptates voluptatum quae assumenda delectus corporis eum! Ducimus in similique fuga aliquam?Lorem ipsum dolor sit amet, consectetur adipisicing elit. Doloribus quisquam impedit aut vel, eaque, est vero, quo ipsum voluptates voluptatum quae assumenda delectus corporis eum! Ducimus in similique fuga aliquam?Lorem ipsum dolor sit amet, consectetur adipisicing elit. Doloribus quisquam impedit aut vel, eaque, est vero, quo ipsum voluptates voluptatum quae assumenda delectus corporis eum! Ducimus in similique fuga aliquam?Lorem ipsum dolor sit amet, consectetur adipisicing elit. Doloribus quisquam impedit aut vel, eaque, est vero, quo ipsum voluptates voluptatum quae assumenda delectus corporis eum! Ducimus in similique fuga aliquam?Lorem ipsum dolor sit amet, consectetur adipisicing elit. Doloribus quisquam impedit aut vel, eaque, est vero, quo ipsum voluptates voluptatum quae assumenda delectus corporis eum! Ducimus in similique fuga aliquam?','2016-04-05 13:21:44.000000','2016-04-06 14:37:02.478901',1,35,'First post, another one','images/virgin-media-ethernet-20160404.png'),(2,'Post 2','And another one.\r\nLorem ipsum dolor sit amet, consectetur adipisicing elit. Doloribus quisquam impedit aut vel, eaque, est vero, quo ipsum voluptates voluptatum quae assumenda delectus corporis eum! Ducimus in similique fuga aliquam?\r\nLorem ipsum dolor sit amet, consectetur adipisicing elit. Doloribus quisquam impedit aut vel, eaque, est vero, quo ipsum voluptates voluptatum quae assumenda delectus corporis eum! Ducimus in similique fuga aliquam?','2016-04-05 14:34:24.000000','2016-04-05 14:34:40.000000',1,47,'Second post',''),(3,'Post 3','Posr 3','2016-04-06 14:11:00.421373','2016-04-06 14:11:00.428162',1,0,NULL,'images/virgin-media-ethernet-20160404_nGkPrxy.png'),(4,'Post 4','Post 4','2016-04-06 14:12:36.222357','2016-04-06 14:12:36.242714',1,3,NULL,'images/virgin-media-ethernet-20160404_61ApqeE.png'),(5,'Post 5','Post5','2016-04-06 14:15:21.901429','2016-04-06 14:15:21.925138',1,3,NULL,'images/virgin-media-ethernet-20160404_6jwVPjD.png'),(6,'Post 6','Post 6 with new content (2)','2016-04-06 14:15:38.563666','2016-04-06 14:38:51.302186',1,6,NULL,'images/virgin-media-ethernet-20160404_gugNKVR.png'),(7,'Post 7','Post 7','2016-04-06 14:19:55.248137','2016-04-06 15:16:17.266667',1,32,NULL,'images/virgin-media-ethernet-20160404_Viiix1G.png'),(8,'Auth1','Auth1 (edit 1)','2016-04-07 14:19:41.856964','2016-04-07 14:20:31.985335',1,5,NULL,'images/virgin-media-ethernet-20160404_GH0VRZb.png');
 /*!40000 ALTER TABLE `blog_post` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -248,7 +338,7 @@ CREATE TABLE `django_admin_log` (
 
 LOCK TABLES `django_admin_log` WRITE;
 /*!40000 ALTER TABLE `django_admin_log` DISABLE KEYS */;
-INSERT INTO `django_admin_log` VALUES (1,'2016-04-05 13:22:54.567410','1','Post 1',1,'Added.',7,1),(2,'2016-04-05 14:00:59.013678','1','Post 1',2,'Changed published_date.',7,1),(3,'2016-04-05 14:34:41.648451','2','Post 2',1,'Added.',7,1),(4,'2016-04-05 14:35:52.070952','2','juan2',1,'Added.',4,1),(5,'2016-04-05 15:42:11.006275','1','Post 1',2,'Changed content.',7,1),(6,'2016-04-05 15:42:18.190711','2','Post 2',2,'Changed content.',7,1),(7,'2016-04-06 09:43:47.829235','1','Post 1',2,'Changed tag.',7,1),(8,'2016-04-06 09:43:54.917554','2','Post 2',2,'Changed tag.',7,1),(9,'2016-04-06 09:44:27.932755','1','Post 1',2,'Changed tag.',7,1),(10,'2016-04-06 11:43:17.191030','1','Post 1',2,'Changed image.',7,1),(11,'2016-04-07 09:29:20.277529','1','/pages/about/ -- About me',1,'Added.',9,1),(12,'2016-04-07 09:33:58.780275','1','/pages/about/ -- About this blog',2,'Changed title and content.',9,1);
+INSERT INTO `django_admin_log` VALUES (1,'2016-04-05 13:22:54.567410','1','Post 1',1,'Added.',7,1),(2,'2016-04-05 14:00:59.013678','1','Post 1',2,'Changed published_date.',7,1),(3,'2016-04-05 14:34:41.648451','2','Post 2',1,'Added.',7,1),(4,'2016-04-05 14:35:52.070952','2','juan2',1,'Added.',NULL,1),(5,'2016-04-05 15:42:11.006275','1','Post 1',2,'Changed content.',7,1),(6,'2016-04-05 15:42:18.190711','2','Post 2',2,'Changed content.',7,1),(7,'2016-04-06 09:43:47.829235','1','Post 1',2,'Changed tag.',7,1),(8,'2016-04-06 09:43:54.917554','2','Post 2',2,'Changed tag.',7,1),(9,'2016-04-06 09:44:27.932755','1','Post 1',2,'Changed tag.',7,1),(10,'2016-04-06 11:43:17.191030','1','Post 1',2,'Changed image.',7,1),(11,'2016-04-07 09:29:20.277529','1','/pages/about/ -- About me',1,'Added.',9,1),(12,'2016-04-07 09:33:58.780275','1','/pages/about/ -- About this blog',2,'Changed title and content.',9,1);
 /*!40000 ALTER TABLE `django_admin_log` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -265,7 +355,7 @@ CREATE TABLE `django_content_type` (
   `model` varchar(100) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `django_content_type_app_label_76bd3d3b_uniq` (`app_label`,`model`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -274,7 +364,7 @@ CREATE TABLE `django_content_type` (
 
 LOCK TABLES `django_content_type` WRITE;
 /*!40000 ALTER TABLE `django_content_type` DISABLE KEYS */;
-INSERT INTO `django_content_type` VALUES (1,'admin','logentry'),(3,'auth','group'),(2,'auth','permission'),(4,'auth','user'),(7,'blog','post'),(5,'contenttypes','contenttype'),(9,'flatpages','flatpage'),(6,'sessions','session'),(8,'sites','site');
+INSERT INTO `django_content_type` VALUES (10,'accounts','user'),(1,'admin','logentry'),(3,'auth','group'),(2,'auth','permission'),(7,'blog','post'),(5,'contenttypes','contenttype'),(9,'flatpages','flatpage'),(6,'sessions','session'),(8,'sites','site');
 /*!40000 ALTER TABLE `django_content_type` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -350,7 +440,7 @@ CREATE TABLE `django_migrations` (
   `name` varchar(255) NOT NULL,
   `applied` datetime(6) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -359,7 +449,7 @@ CREATE TABLE `django_migrations` (
 
 LOCK TABLES `django_migrations` WRITE;
 /*!40000 ALTER TABLE `django_migrations` DISABLE KEYS */;
-INSERT INTO `django_migrations` VALUES (1,'contenttypes','0001_initial','2016-04-05 11:45:29.005609'),(2,'auth','0001_initial','2016-04-05 11:45:29.370690'),(3,'admin','0001_initial','2016-04-05 11:45:29.435534'),(4,'admin','0002_logentry_remove_auto_add','2016-04-05 11:45:29.476431'),(5,'contenttypes','0002_remove_content_type_name','2016-04-05 11:45:29.547037'),(6,'auth','0002_alter_permission_name_max_length','2016-04-05 11:45:29.578216'),(7,'auth','0003_alter_user_email_max_length','2016-04-05 11:45:29.609318'),(8,'auth','0004_alter_user_username_opts','2016-04-05 11:45:29.622238'),(9,'auth','0005_alter_user_last_login_null','2016-04-05 11:45:29.656578'),(10,'auth','0006_require_contenttypes_0002','2016-04-05 11:45:29.658383'),(11,'auth','0007_alter_validators_add_error_messages','2016-04-05 11:45:29.669660'),(12,'sessions','0001_initial','2016-04-05 11:45:29.701481'),(13,'blog','0001_initial','2016-04-05 12:05:58.152150'),(14,'blog','0002_post_views','2016-04-06 09:36:18.604355'),(15,'blog','0003_post_tag','2016-04-06 09:41:33.877065'),(16,'blog','0004_post_image','2016-04-06 11:26:17.621766'),(17,'sites','0001_initial','2016-04-06 11:26:17.661042'),(18,'sites','0002_alter_domain_unique','2016-04-06 11:26:17.690354'),(19,'flatpages','0001_initial','2016-04-07 09:17:43.959319');
+INSERT INTO `django_migrations` VALUES (1,'contenttypes','0001_initial','2016-04-05 11:45:29.005609'),(2,'auth','0001_initial','2016-04-05 11:45:29.370690'),(3,'admin','0001_initial','2016-04-05 11:45:29.435534'),(4,'admin','0002_logentry_remove_auto_add','2016-04-05 11:45:29.476431'),(5,'contenttypes','0002_remove_content_type_name','2016-04-05 11:45:29.547037'),(6,'auth','0002_alter_permission_name_max_length','2016-04-05 11:45:29.578216'),(7,'auth','0003_alter_user_email_max_length','2016-04-05 11:45:29.609318'),(8,'auth','0004_alter_user_username_opts','2016-04-05 11:45:29.622238'),(9,'auth','0005_alter_user_last_login_null','2016-04-05 11:45:29.656578'),(10,'auth','0006_require_contenttypes_0002','2016-04-05 11:45:29.658383'),(11,'auth','0007_alter_validators_add_error_messages','2016-04-05 11:45:29.669660'),(12,'sessions','0001_initial','2016-04-05 11:45:29.701481'),(13,'blog','0001_initial','2016-04-05 12:05:58.152150'),(14,'blog','0002_post_views','2016-04-06 09:36:18.604355'),(15,'blog','0003_post_tag','2016-04-06 09:41:33.877065'),(16,'blog','0004_post_image','2016-04-06 11:26:17.621766'),(17,'sites','0001_initial','2016-04-06 11:26:17.661042'),(18,'sites','0002_alter_domain_unique','2016-04-06 11:26:17.690354'),(19,'flatpages','0001_initial','2016-04-07 09:17:43.959319'),(20,'accounts','0001_initial','2016-04-07 11:59:22.902142');
 /*!40000 ALTER TABLE `django_migrations` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -385,7 +475,7 @@ CREATE TABLE `django_session` (
 
 LOCK TABLES `django_session` WRITE;
 /*!40000 ALTER TABLE `django_session` DISABLE KEYS */;
-INSERT INTO `django_session` VALUES ('tixptol9jovi2xaajps6xsb07by99dbh','ZTA1NGMwNDJhNWE0ODNjMmI3YTcyNmJjMTE0NzRlNmRmNzg3MTI5Yzp7Il9hdXRoX3VzZXJfaGFzaCI6IjIwZTAyNWRjNDQ5NTBkMTdlYTY5YWY2YmU0ZWFmMjBjMjMwYTg4MTEiLCJfYXV0aF91c2VyX2JhY2tlbmQiOiJkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZCIsIl9hdXRoX3VzZXJfaWQiOiIxIn0=','2016-04-19 11:47:31.405426');
+INSERT INTO `django_session` VALUES ('drygsjifo3pzg9m9xdndocj3sz052dmv','MGY0NTJiODExMzRmOGM2NjgzMzRlYWUyMDcyODc4MjZjY2JlNWIwMDp7Il9hdXRoX3VzZXJfaGFzaCI6ImZmNDlhNDhkZjI2N2M2ODc4NjlkNmVkZTUzZjgyMTEwNjNhZjU0MWYiLCJfYXV0aF91c2VyX2JhY2tlbmQiOiJhY2NvdW50cy5iYWNrZW5kcy5FbWFpbEF1dGgiLCJfYXV0aF91c2VyX2lkIjoiMSJ9','2016-04-21 15:21:47.917715'),('lquv6ofrc8fxjdyostmeml8434gnipth','ODNiNjI0M2EyMjFjY2MyM2VjY2M5M2M5ZWEwNDlhNGZiNjliOWJhYzp7Il9hdXRoX3VzZXJfaGFzaCI6IjdlYTUwMzk3MDg2ZDljOGVhODJiNjljYTdiMDE1MmY4MTI5MGE5Y2MiLCJfYXV0aF91c2VyX2JhY2tlbmQiOiJhY2NvdW50cy5iYWNrZW5kcy5FbWFpbEF1dGgiLCJfYXV0aF91c2VyX2lkIjoiMiJ9','2016-04-21 15:53:07.934275'),('x1rmhpu614d4f8scjlul660pzr4etm89','ODNiNjI0M2EyMjFjY2MyM2VjY2M5M2M5ZWEwNDlhNGZiNjliOWJhYzp7Il9hdXRoX3VzZXJfaGFzaCI6IjdlYTUwMzk3MDg2ZDljOGVhODJiNjljYTdiMDE1MmY4MTI5MGE5Y2MiLCJfYXV0aF91c2VyX2JhY2tlbmQiOiJhY2NvdW50cy5iYWNrZW5kcy5FbWFpbEF1dGgiLCJfYXV0aF91c2VyX2lkIjoiMiJ9','2016-04-21 15:55:51.316942');
 /*!40000 ALTER TABLE `django_session` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -424,4 +514,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-04-07 11:41:41
+-- Dump completed on 2016-04-07 16:59:24
