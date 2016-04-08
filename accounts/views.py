@@ -8,8 +8,8 @@ from django.conf import settings
 import datetime
 import stripe
 
+
 stripe.api_key = settings.STRIPE_SECRET
-print "***", stripe.api_key
 
 def register(request):
     if request.method == 'POST':
@@ -19,7 +19,7 @@ def register(request):
             try:
                 customer = stripe.Charge.create(
                         amount=499,
-                        currency="USD",
+                        currency="EUR",
                         description=form.cleaned_data['email'],
                         card=form.cleaned_data['stripe_id'],
                 )
@@ -36,7 +36,7 @@ def register(request):
                     messages.success(request, "You have successfully registered")
                     return redirect(reverse('profile'))
                 else:
-                    messages.error(request, "unable to log you in at this time!")
+                    messages.error(request, "Unable to log you in at this time!")
             else:
                 messages.error(request, "We were unable to take a payment with that card!")
 
@@ -49,11 +49,6 @@ def register(request):
     args.update(csrf(request))
 
     return render(request, 'register.html', args)
-
-
-
-def profile(request):
-    return render(request,'profile.html')
 
 
 
