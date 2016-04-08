@@ -7,4 +7,9 @@
     {% if user.is_superuser %}
         <p class="label label-danger">You are administrator</p>
     {% endif %}
+    {% if user.stripe_id %}
+        <p>Stripe ID: {{  user.stripe_id }}r</p>
+    {% else %}
+        <p>(You have no Strip ID)</p>
+    {% endif %}
 {% endblock %}
