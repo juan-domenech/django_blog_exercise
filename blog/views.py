@@ -5,16 +5,21 @@ from .forms import BlogPostForm
 
 from django.contrib import auth
 
+from django.contrib.auth.decorators import login_required
+
 
 def test(request):
     return HttpResponse('Test OK!')
 
+
 def no_path(request):
     return redirect('/blog/')
+
 
 def post_list(request):
     posts = Post.objects.filter(published_date__lte = timezone.now() ).order_by('-published_date')
     return render(request, "blogposts.html",{'posts' : posts } )
+
 
 def post_detail(request,id):
     post = get_object_or_404(Post,pk=id)
@@ -23,6 +28,8 @@ def post_detail(request,id):
     post.save()
     return render(request, "blogdetail.html",{'post' : post} )
 
+
+@login_required(login_url='/login/')
 def new_post(request):
     if request.method == "POST":
         form = BlogPostForm(request.POST, request.FILES)
@@ -38,10 +45,15 @@ def new_post(request):
     else:
         #form = PostForm()
         form = BlogPostForm()
-    return render(request,'blogpostform.html',{'form': form})
+    return render(request, 'blogpostform.html', {'form': form} )
 
+
+@login_required(login_url='/login/')
 def edit_post(request, pk):
     post = get_object_or_404(Post, pk=pk)
+    # Let's make sure only the author can edit
+    if post.author != auth.get_user(request):
+        return render(request, 'edit_post_alert.html')
     if request.method == "POST":
         form = BlogPostForm(request.POST, instance=post)
         if form.is_valid():
@@ -52,4 +64,4 @@ def edit_post(request, pk):
             return redirect(post_detail, post.pk)
     else:
         form = BlogPostForm(instance=post)
-    return render(request, 'blogpostform.html', {'form': form})
+    return render(request, 'blogpostform.html', {'form': form} )
