@@ -18,7 +18,7 @@ from django.conf.urls import url,include
 from django.contrib import admin
 from blog import views
 from .settings import MEDIA_ROOT
-from accounts.views import register, profile, login, logout
+from accounts.views import register, profile, login, logout, cancel_subscription, subscriptions_webhook
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -30,4 +30,6 @@ urlpatterns = [
     url(r'^profile/$', profile,name='profile'),
     url(r'^login/$', login, name='login'),
     url(r'^logout/$',logout, name='logout'),
+    url(r'^cancel_subscription/$', cancel_subscription, name='cancel_subscription'),
+    url(r'^subscriptions_webhook/$', subscriptions_webhook, name='subscriptions_webhook'),
 ]
